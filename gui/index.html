@@ -4,20 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Switch Config Viewer</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Add CSS file -->
 </head>
 <body>
     <h1>Switch Config Viewer</h1>
-    <label for="switch">Select Switch:</label>
     <select id="switch">
         <!-- Options will be populated dynamically -->
     </select>
     <br>
-    <label for="date">Enter Date:</label>
-    <input type="text" id="date" placeholder="DD-MM-YYYY">
+    <div class="input-container">
+        <div class="input-group">
+            <label for="date1">Enter Date 1:</label>
+            <input type="text" id="date1" placeholder="DD-MM-YYYY">
+        </div>
+        <div class="input-group">
+            <label for="date2">Enter Date 2:</label>
+            <input type="text" id="date2" placeholder="DD-MM-YYYY">
+        </div>
+    </div>
+    <div class="output-container">
+        <div class="output-box">
+            <label for="configDisplay1">Switch Config 1:</label>
+            <div id="configDisplay1" class="config-display"></div>
+        </div>
+        <div class="output-box">
+            <label for="configDisplay2">Switch Config 2:</label>
+            <div id="configDisplay2" class="config-display"></div>
+        </div>
+    </div>
+
+    <!-- Original elements -->
+    
     <br>
-    <button onclick="getConfig()">Get Config</button>
+    <button onclick="getConfigs()">Get Configs</button>
     <br>
-    <div id="configDisplay"></div>
+    <div id="compareDisplay" class="original-config-display"></div>
+    <button onclick="compareConfigs()" class="compare-button">Compare Configs</button>
+
     <script src="script.js"></script>
 </body>
 </html>

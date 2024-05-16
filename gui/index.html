@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Switch Config Viewer</title>
+</head>
+<body>
+    <h1>Switch Config Viewer</h1>
+    <label for="switch">Select Switch:</label>
+    <select id="switch">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <br>
+    <label for="date">Enter Date:</label>
+    <input type="text" id="date" placeholder="DD-MM-YYYY">
+    <br>
+    <button onclick="getConfig()">Get Config</button>
+    <br>
+    <div id="configDisplay"></div>
+    <script src="script.js"></script>
+</body>
+</html>

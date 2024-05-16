@@ -1,0 +1,28 @@
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    width: 45%;
+}
+
+.output-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.output-box {
+    width: 45%;
+}
+
+.config-display {
+    height: 100px;
+    width: 100%;
+    overflow-y: scroll;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-top: 5px;
+}

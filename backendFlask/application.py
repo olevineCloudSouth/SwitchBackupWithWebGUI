@@ -1,6 +1,6 @@
 from flask import Flask
 
-from endpoints.check_config import web_switch_check
+from flask_endpoints.check_config import web_switch_check
 
 app = Flask(__name__)
 

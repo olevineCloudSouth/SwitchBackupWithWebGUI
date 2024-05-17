@@ -26,6 +26,4 @@ def config_check_main():
     if check_switch == NULL or date == NULL:
         return jsonify("Error missing params"), 400
     config_path = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(date, check_switch, date)
-    #return jsonify(get_config(config_path)), 200
-    return jsonify("CS-424-Lake-Av-1000-2#terminal length 0write memBuilding confiasdfasdfasdfasdfasdfasdfasdfasdfasdfguration.minal length 0write memBuilding confiasdfasdfasdfasdfasdfasdfasdfasdfasdfgurationminal length 0write memBuilding confiasdfasdfasdfasdfasdfasdfasdfasdfasdfgurationminal length 0write memBuilding confiasdfasdfasdfasdfasdfasdfasdfasdfasdfgurationminal length 0write memBuilding confiasdfasdfasdfasdfasdfasdfasdfasdfasdfgurationminal length 0write memBuilding confiasdfasdfasdfasdfasdfasdfasdfasdfasdfguration..Compressed configuration from 17082 bytes to 7037 bytes[OK]CS-424-Lake-Av-1000-2show runBuilding configuration..Current configuration : 17082 bytes"), 200
-
+    return jsonify(get_config(config_path)), 200

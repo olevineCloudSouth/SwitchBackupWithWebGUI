@@ -14,12 +14,12 @@
     <br>
     <div class="input-container">
         <div class="input-group">
-            <label for="date1">Enter Date 1:</label>
-            <input type="text" id="date1" placeholder="DD-MM-YYYY">
+            <label for="date1">Enter Old Date:</label>
+            <input type="text" id="date1" placeholder="MM-DD-YYYY">
         </div>
         <div class="input-group">
-            <label for="date2">Enter Date 2:</label>
-            <input type="text" id="date2" placeholder="DD-MM-YYYY">
+            <label for="date2">Enter New Date:</label>
+            <input type="text" id="date2" placeholder="MM-DD-YYYY">
         </div>
     </div>
     <div class="output-container">
@@ -36,10 +36,10 @@
     <!-- Original elements -->
     
     <br>
-    <button onclick="getConfigs()">Get Configs</button>
+    <button id="getConfigsButton" onclick="getConfigs()">Get Configs</button>
     <br>
     <div id="compareDisplay" class="original-config-display"></div>
-    <button onclick="compareConfigs()" class="compare-button">Compare Configs</button>
+    <button id="compareConfigsButton" onclick="compareConfigs()" class="compare-button">Compare Configs</button>
 
     <script src="script.js"></script>
 </body>

@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 import difflib
@@ -72,17 +73,14 @@ web_switch_check = Blueprint('web_switch_check', __name__)
 @web_switch_check.route('/switch_check', methods=['GET'])
 @cross_origin()
 def switch_check_main():
-    request_data = request.get_json()
-    if request_data['old_date'] and request_data['new_date'] and request_data['check_switch']:
-        old_date = request_data['old_date']
-        new_date = request_data['new_date']
-        check_switch = request_data['check_switch']
-
-        past_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
-        curr_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
-        formatted_diff, status = compare_configs(curr_config, past_config)
-    else: 
-        return jsonify("Error: Missing parameters"), 400
+    new_date = request.args.get('new_date')
+    old_date = request.args.get('old_date')
+    check_switch = request.args.get('check_switch')
+    if check_switch == NULL or new_date == NULL or old_date == NULL:
+        return jsonify("Error missing params"), 400
+    past_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
+    curr_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
+    formatted_diff, status = compare_configs(curr_config, past_config)
     if status == 12 and formatted_diff != None:
         #case where there are differences
         return jsonify(formatted_diff), 200

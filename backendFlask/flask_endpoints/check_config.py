@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 import difflib
@@ -75,8 +74,8 @@ web_switch_check = Blueprint('web_switch_check', __name__)
 def switch_check_main():
     new_date = request.args.get('new_date')
     old_date = request.args.get('old_date')
-    check_switch = request.args.get('check_switch')
-    if check_switch == NULL or new_date == NULL or old_date == NULL:
+    check_switch = request.args.get('switch_name')
+    if check_switch == None or new_date == None or old_date == None:
         return jsonify("Error missing params"), 400
     past_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
     curr_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)

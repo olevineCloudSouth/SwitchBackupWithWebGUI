@@ -52,6 +52,7 @@ button:hover {
 .config-display {
     height: 100px;
     width: 100%;
+    resize: both;
     overflow-y: scroll;
     background-color: #f2f2f2;
     border: 1px solid #ccc;
@@ -60,7 +61,8 @@ button:hover {
 }
 
 .original-config-display {
-    height: 100px;
+    height: 200px;
+    resize: both;
     width: 100%;
     overflow-y: scroll;
     background-color: #f2f2f2;

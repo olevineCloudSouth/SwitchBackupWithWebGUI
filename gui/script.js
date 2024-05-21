@@ -12,9 +12,9 @@ function getConfigs() {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(config => {
-        document.getElementById('configDisplay1').textContent = config;
+        document.getElementById('configDisplay1').innerText = config;
     })
     .catch(error => console.error('Error fetching config:', error));
 
@@ -26,9 +26,9 @@ function getConfigs() {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(config => {
-        document.getElementById('configDisplay2').textContent = config;
+        document.getElementById('configDisplay2').innerText = config;
     })
     .catch(error => console.error('Error fetching config:', error));
 }
@@ -95,9 +95,9 @@ function compareConfigs() {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(config => {
-        document.getElementById('compareDisplay').textContent = config;
+        document.getElementById('compareDisplay').innerText = config;
     })
     .catch(error => console.error('Error fetching config:', error));
 

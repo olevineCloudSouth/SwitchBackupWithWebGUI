@@ -63,7 +63,7 @@ def get_info():
     return df
 
 def get_curr_config (switch_name, switch_info):
-    switch_ip = switch_info.loc[switch_info['name'] == switch_name, 'switch_ips']
+    switch_ip = switch_info.loc[switch_info['name'] == switch_name, 'switch_ips'].iloc[0]
     for pwd in passwords:
         config, status_code = switch_touch(switch_ip, pwd)
         if status_code == 10:
@@ -84,7 +84,7 @@ def config_check_main():
     check_switch = request.args.get('switch_name')
     if check_switch == None or date == None:
         return jsonify("Error missing params"), 400
-    if check_switch == 'current':
+    if date == 'current':
         switch_info = get_info()
         return jsonify(get_curr_config(check_switch, switch_info)), 200
             

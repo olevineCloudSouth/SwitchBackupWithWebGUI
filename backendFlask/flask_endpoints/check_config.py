@@ -1,12 +1,9 @@
 from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 import difflib
-import paramiko
-import time
-import pandas as pd
 import configparser
 
-from backendFlask.flask_endpoints.get_config import get_curr_config
+from .get_config import get_curr_config, get_info, switch_touch
 
 passwords = []
 
@@ -88,57 +85,6 @@ def compare_configs(config_file_today, config_file_yesterday, switch_name):
 
     return formatted_diff, 12
 
-def switch_touch(ip, password):
-    try:
-
-         # Create an SSH client instance
-        ssh_client = paramiko.SSHClient()
-        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh_client.connect(hostname=ip, username='netadmin', password=password, timeout=5)
-        ssh_shell = ssh_client.invoke_shell()
-        ssh_shell.send("terminal length 0\n")  # Set terminal length to 0 to get the entire output
-        #wait until the shell is ready
-        while not ssh_shell.recv_ready():
-            pass
-        #write mem to save the config
-        ssh_shell.send("write mem\n")
-        #print out config
-        ssh_shell.send("show run\n")
-        #wait for it to finish
-        time.sleep(3)
-        #load config into string to pass
-        switch_output = ssh_shell.recv(65535).decode('utf-8')
-        i = 0
-        while not switch_output.endswith('#') or len(switch_output) < 1000:
-            time.sleep(1)
-            switch_output += ssh_shell.recv(65535).decode('utf-8')
-            i += 1
-            if i > 35:
-                return "Error: Connection timed out or switch took too long to respond", 14
-
-        switch_output = switch_output.strip()
-        return switch_output, 10
-    except Exception as e:
-        #traceback.print_exc()
-        print("Error: " + str(e) + "\n")
-        error = "Error: " + str(e) + "\n"
-        error = error.strip()
-        return error, 12
-    finally:
-         # Close SSH connection properly
-            ssh_client.close()
-
-def get_info():
-    df = pd.read_csv("/opt/backup-script/switch_ips.csv")
-    return df
-
-def get_curr_config (switch_name, switch_info):
-    switch_ip = switch_info.loc[switch_info['name'] == switch_name, 'switch_ips']
-    for pwd in passwords:
-        config, status_code = switch_touch(switch_ip, pwd)
-        if status_code == 10:
-            break
-    return config
 
 web_switch_check = Blueprint('web_switch_check', __name__)
 @web_switch_check.route('/switch_check', methods=['GET'])

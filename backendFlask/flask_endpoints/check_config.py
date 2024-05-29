@@ -15,7 +15,7 @@ def format_diff(diff_lines):
             formatted_diff.append(line)
         elif line.startswith('@@'):
             # Section header, keep it as-is
-            formatted_diff.append(line)
+            formatted_diff.append(line + "\n")
         elif line.startswith('+'):
             # Check if line contains "ntp clock-period"
             if "ntp clock-period" in line:
@@ -69,11 +69,13 @@ def compare_configs(config_file_today, config_file_yesterday, switch_name):
         except FileNotFoundError:
             return None, 10
 
-        
         f_today = get_curr_config(switch_name, get_info())
-        today_lines = f_today.splitlines()[50:]
+        today_lines = f_today.splitlines(keepends=True)[50:]
 
-
+    today_lines = [line.strip() + "\n" for line in today_lines]
+    today_lines[0] = "\n" + today_lines[0]
+    yesterday_lines = [line.strip() + "\n" for line in yesterday_lines]
+    yesterday_lines[0] =  "\n" + yesterday_lines[0]
     diff = difflib.unified_diff(yesterday_lines, today_lines, lineterm='')
     diff_lines = list(diff)
     formatted_diff = format_diff(diff_lines)
@@ -104,7 +106,7 @@ def switch_check_main():
         return jsonify("Error missing params"), 400
     past_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
     curr_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
-    if new_date == 'current': 
+    if new_date == 'current':
         curr_config = 'current'
     formatted_diff, status = compare_configs(curr_config, past_config, check_switch)
     if status == 12 and formatted_diff != None:
@@ -116,6 +118,6 @@ def switch_check_main():
     elif status == 10:
         #case where one of the configs isn't found
         return jsonify("Config not found error")
-    else: 
+    else:
         print("error")
         return jsonify("Unexpected error"), 400

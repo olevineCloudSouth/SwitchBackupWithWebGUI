@@ -106,7 +106,7 @@ def switch_check_main():
         return jsonify("Error missing params"), 400
     past_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
     curr_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
-    if new_date == 'current':
+    if new_date == 'current': 
         curr_config = 'current'
     formatted_diff, status = compare_configs(curr_config, past_config, check_switch)
     if status == 12 and formatted_diff != None:
@@ -118,6 +118,6 @@ def switch_check_main():
     elif status == 10:
         #case where one of the configs isn't found
         return jsonify("Config not found error")
-    else:
+    else: 
         print("error")
         return jsonify("Unexpected error"), 400

@@ -6,6 +6,7 @@ import pandas as pd
 import configparser
 
 passwords = []
+
 def get_config(file_path):
     try:
         with open(file_path, 'r') as file:
@@ -13,10 +14,11 @@ def get_config(file_path):
         return text
     except FileNotFoundError:
         print("File not found.")
-        return None
+        return "Config Not Found."
     except Exception as e:
         print(f"Error reading file: {e}")
-        return None
+        return "Unexpected Error"
+
 
 def switch_touch(ip, password):
     try:
@@ -70,7 +72,6 @@ def get_curr_config (switch_name, switch_info):
             break
     return config
 
-
 web_get_config = Blueprint('web_get_config', __name__)
 @web_get_config.route('/get_config', methods=['GET'])
 @cross_origin()
@@ -87,6 +88,5 @@ def config_check_main():
     if date == 'current':
         switch_info = get_info()
         return jsonify(get_curr_config(check_switch, switch_info)), 200
-            
     config_path = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(date, check_switch, date)
     return jsonify(get_config(config_path)), 200

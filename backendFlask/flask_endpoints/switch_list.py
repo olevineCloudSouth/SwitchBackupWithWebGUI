@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def get_info():
-    df = pd.read_csv("flask_endpoints/switch_ips.csv")
+    df = pd.read_csv("/opt/backup-script/switch_ips.csv")
     return df
 
 switch_list = Blueprint('switch_list', __name__)

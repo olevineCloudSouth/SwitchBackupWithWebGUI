@@ -15,7 +15,7 @@ function track_ip() {
         // Populate list with each result item
         data.forEach(item => {
             const listItem = document.createElement('li');
-            listItem.textContent = `Subnet: ${item.subnet}, Switch Name: ${item.switch_name}`;
+            listItem.innerHTML = `Subnet: ${item.subnet} <br>In Switch: ${item.switch_name} <br>In VLAN: ${item.vlan}`;
             resultsList.appendChild(listItem);
         });
     })

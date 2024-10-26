@@ -91,7 +91,7 @@ def track_ip_main():
     regex_ip = r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b'
     if not re.match(regex_ip, ip):
         return jsonify("That IP is not the correct format. ERROR!"), 400
-    regex_date = r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b'
+    regex_date = r'\b\d{2}-\d{2}-\d{4}\b'
     if not re.match(regex_date, date):
         return jsonify("That date is not the correct format. ERROR!"), 400
     #return json list of results

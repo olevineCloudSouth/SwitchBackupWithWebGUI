@@ -1,7 +1,7 @@
 function track_ip() { 
     const ip_date = document.getElementById('ip_date').value; 
     const ip = document.getElementById('ip_to_track').value;
-    const url = `http://127.0.0.1:5000/track_ip?date=${encodeURIComponent(ip_date)}&ip=${encodeURIComponent(ip)}`;
+    const url = `/api/track_ip?date=${encodeURIComponent(ip_date)}&ip=${encodeURIComponent(ip)}`;
     console.log(url)
     fetch(url, { 
         method: 'GET', 

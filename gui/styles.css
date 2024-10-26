@@ -126,3 +126,45 @@ button:disabled {
     background-color: grey;
     cursor: not-allowed;
 }
+.banner {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 20px; /* Adjust this value to control the gap */
+}
+
+.banner a {
+    color: white;
+    font-weight: bold;
+    margin: 0 20px;
+    text-decoration: none;
+}
+
+.banner a:hover {
+    text-decoration: underline;
+}
+
+.banner a.active {
+    font-size: 18px; /* Larger font size for the active link */
+    text-decoration: underline; /* Optional: underline for emphasis */
+}
+.results-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#resultsList {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+#resultsList li {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}

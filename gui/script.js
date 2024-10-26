@@ -34,7 +34,8 @@ function populateSwitches() { fetch('/api/switch_list') .then(response => respon
         })
         .catch(error => console.error('Error fetching switches:', error));
 }
-window.onload = populateSwitches; document.addEventListener('DOMContentLoaded', function() { const date1 = 
+window.onload = populateSwitches; 
+document.addEventListener('DOMContentLoaded', function() { const date1 = 
     document.getElementById('date1'); const date2 = document.getElementById('date2'); const getConfigsButton = 
     document.getElementById('getConfigsButton'); const compareConfigsButton = 
     document.getElementById('compareConfigsButton'); function validateDateFormat(date) {

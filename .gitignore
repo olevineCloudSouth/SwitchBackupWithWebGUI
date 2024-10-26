@@ -1,2 +1,2 @@
-/backendFlask/flask_endpoints/backups/*
+backendFlask/backups/*
 switch_ips.csv

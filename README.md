@@ -1,3 +1,8 @@
+Added IP tracker page with navigation banner for going between the pages
+![image](https://github.com/user-attachments/assets/cb071229-9bd6-4a93-a329-8733be0ee6b3)
+
+
+
 Deployable website intended for internal access to switch configs. Meant to run in tandem with switch backup script on a server so that you can quickly access and compare backup configs from a web gui
 
 Web GUI pics

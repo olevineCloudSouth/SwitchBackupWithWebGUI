@@ -18,11 +18,12 @@ function track_ip() {
             listItem.innerHTML = `Subnet: ${item.subnet} <br>In Switch: ${item.switch_name} <br>In VLAN: ${item.vlan}`;
             resultsList.appendChild(listItem);
         });
-        if (data.length == 0) {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `That IP does not seem to be routed in the switch configs from this date.`;
-            resultsList.appendChild(listItem);
-        }
+	if (data.length == 0){
+		const listItem = document.createElement('li');
+		listItem.innerHTML = `That IP does not seem to be routed in the switch configs from this date.`;
+		resultsList.appendChild(listItem);
+
+	}
     })
     .catch(error => console.error('Error fetching config:', error));
 }

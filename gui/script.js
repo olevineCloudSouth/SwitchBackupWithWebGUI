@@ -26,13 +26,13 @@ function getConfigs() { const switchName = document.getElementById('switch').val
     })
     .catch(error => console.error('Error fetching config:', error));
 }
-function populateSwitches() { fetch('/api/switch_list') .then(response => response.json()) .then(data => { const 
-            switchDropdown = document.getElementById('switch'); data.switch_names.forEach(switchName => {
-                const option = document.createElement('option'); option.value = switchName; option.textContent = 
-                switchName; switchDropdown.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching switches:', error));
+function populateSwitches() { fetch('/api/switch_list').then(response => response.json()).then(data => { const 
+        switchDropdown = document.getElementById('switch'); data.switch_names.forEach(switchName => {
+            const option = document.createElement('option'); option.value = switchName; option.textContent = 
+            switchName; switchDropdown.appendChild(option);
+        });
+    })
+    .catch(error => console.error('Error fetching switches:', error));
 }
 window.onload = populateSwitches; 
 document.addEventListener('DOMContentLoaded', function() { const date1 = 

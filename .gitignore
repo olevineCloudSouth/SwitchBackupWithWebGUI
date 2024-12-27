@@ -1,2 +1,3 @@
 backendFlask/backups/*
 switch_ips.csv
+*.ini

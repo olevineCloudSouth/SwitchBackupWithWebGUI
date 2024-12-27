@@ -3,7 +3,7 @@ from flask_cors import cross_origin
 import difflib
 import configparser
 
-from .get_config import get_curr_config, get_info, switch_touch
+from .get_config import get_curr_config, get_info
 
 passwords = []
 

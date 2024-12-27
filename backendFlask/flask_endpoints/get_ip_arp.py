@@ -7,14 +7,14 @@ import configparser
 
 passwords = []
 
-def get_config(file_path):
+def get_ip_arp(file_path):
     try:
         with open(file_path, 'r') as file:
             text = file.read()
         return text
     except FileNotFoundError:
         print("File not found.")
-        return "Config Not Found."
+        return "IP Arp Table Not Found."
     except Exception as e:
         print(f"Error reading file: {e}")
         return "Unexpected Error"
@@ -35,13 +35,13 @@ def switch_touch(ip, password):
         #write mem to save the config
         ssh_shell.send("write mem\n")
         #print out config
-        ssh_shell.send("show run\n")
+        ssh_shell.send("sh ip arp\n")
         #wait for it to finish
-        time.sleep(3)
+        time.sleep(5)
         #load config into string to pass
         switch_output = ssh_shell.recv(65535).decode('utf-8')
         i = 0
-        while not switch_output.endswith('#') or len(switch_output) < 1000:
+        while not switch_output.endswith('#') or len(switch_output) < 10:
             time.sleep(1)
             switch_output += ssh_shell.recv(65535).decode('utf-8')
             i += 1
@@ -64,18 +64,18 @@ def get_info():
     df = pd.read_csv("/opt/backup-script/switch_ips.csv")
     return df
 
-def get_curr_config (switch_name, switch_info):
+def get_curr_arps (switch_name, switch_info):
     switch_ip = switch_info.loc[switch_info['name'] == switch_name, 'switch_ips'].iloc[0]
     for pwd in passwords:
-        config, status_code = switch_touch(switch_ip, pwd)
+        arps, status_code = switch_touch(switch_ip, pwd)
         if status_code == 10:
             break
-    return config
+    return arps
 
-web_get_config = Blueprint('web_get_config', __name__)
-@web_get_config.route('/get_config', methods=['GET'])
+web_get_arps = Blueprint('web_get_arps', __name__)
+@web_get_arps.route('/get_ip_arp', methods=['GET'])
 @cross_origin()
-def config_check_main():
+def arp_check_main():
     pwds = configparser.ConfigParser()
     pwds.read('/opt/backup-script/pwds.ini')
 
@@ -87,6 +87,6 @@ def config_check_main():
         return jsonify("Error missing params"), 400
     if date == 'current':
         switch_info = get_info()
-        return jsonify(get_curr_config(check_switch, switch_info)), 200
-    config_path = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(date, check_switch, date)
-    return jsonify(get_config(config_path)), 200
+        return jsonify(get_curr_arps(check_switch, switch_info)), 200
+    arp_path = "/mnt/sda/switch-configs/{}/{}_arps-{}.txt".format(date, check_switch, date)
+    return jsonify(get_ip_arp(arp_path)), 200

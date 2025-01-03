@@ -1,8 +1,10 @@
-update check_config end point to allow checking configs macs ints and arps
+update check_config end point to allow checking configs macs ints and arps !!DONE!!
 
 update track ip function with changes such as fixing the bug of not detecting the gateway ip in a subnet and not working with .125 type gateway subnets
 
 recode check_config format and compare functions to make it return a json object with better structuring for del and add lines to allow color coding on the front end. 
-    Could just replace del and add with like unique 10 or so digit strings that can be detected and parsed by front end to force that entire line to be colored or could make it so every line is touple with either none, add, or del as the second part of the touple and the line string as the main part of the touple then make the front end color the text based on this. Also remove the commas at the beginning of every line.
+    Could just replace del and add with like unique 10 or so digit strings that can be detected and parsed by front end to force that entire line to be colored or could make it so every line is touple with either none, add, or del as the second part of the touple and the line string as the main part of the touple then make the front end color the text based on this. Also remove the commas at the beginning of every line. !!!!! DoNE !!!!
+
+update every single file location to go to switch-backups and look in switch-backups
 
     

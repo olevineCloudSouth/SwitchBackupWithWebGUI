@@ -4,55 +4,10 @@ import difflib
 import configparser
 
 from .get_config import get_curr_config, get_info
+from .compare_help import format_diff, check_changes
+
 
 passwords = []
-
-def format_diff(diff_lines):
-    formatted_diff = []
-    for line in diff_lines:
-        if line.startswith('--- ') or line.startswith('+++ '):
-            # File names, keep them as-is
-            formatted_diff.append(line)
-        elif line.startswith('@@'):
-            # Section header, keep it as-is
-            formatted_diff.append(line + "\n")
-        elif line.startswith('+'):
-            # Check if line contains "ntp clock-period"
-            if "ntp clock-period" in line:
-                continue  # Skip this line
-            # Added lines, prefix with "+"
-            formatted_diff.append(f"add {line[1:]}")
-        elif line.startswith('-'):
-            # Check if line contains "ntp clock-period"
-            if "ntp clock-period" in line:
-                continue  # Skip this line
-            # Removed lines, prefix with "-"
-            formatted_diff.append(f"del {line[1:]}")
-        else:
-            # Unchanged lines, no prefix
-            formatted_diff.append(f"  {line}")
-    return formatted_diff
-
-def check_changes(formatted_diff):
-    sections = [[]]  # Initialize sections with an empty list
-    i = 0
-    for line in formatted_diff:
-        if line.startswith('@@'):
-            i += 1
-            sections.append([])  # Append a new empty list for the next section
-        sections[i].append(line)
-
-    # Remove sections that don't contain 'del' or 'add'
-    sections_to_remove = []
-    for idx, section in enumerate(sections):
-        contains_del_add = any('del ' in line or 'add ' in line for line in section)
-        if not contains_del_add:
-            sections_to_remove.append(idx)
-
-    for idx in reversed(sections_to_remove):
-        del sections[idx]
-
-    return sections
 
 def compare_configs(config_file_today, config_file_yesterday, switch_name):
     if config_file_today != 'current':
@@ -88,10 +43,10 @@ def compare_configs(config_file_today, config_file_yesterday, switch_name):
     return formatted_diff, 12
 
 
-web_switch_check = Blueprint('web_switch_check', __name__)
-@web_switch_check.route('/switch_check', methods=['GET'])
+web_compare_config = Blueprint('web_compare_config', __name__)
+@web_compare_config.route('/compare_config', methods=['GET'])
 @cross_origin()
-def switch_check_main():
+def compare_config_main():
     config = configparser.ConfigParser()
     config.read('/opt/backup-script/pwds.ini')
 
@@ -104,7 +59,9 @@ def switch_check_main():
     check_switch = request.args.get('switch_name')
     if check_switch == None or new_date == None or old_date == None:
         return jsonify("Error missing params"), 400
+    #past_config = "./flask_endpoints/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
     past_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
+    #curr_config = "./flask_endpoints/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
     curr_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
     if new_date == 'current': 
         curr_config = 'current'
@@ -114,10 +71,10 @@ def switch_check_main():
         return jsonify(formatted_diff), 200
     elif status == 11:
         #case where there is no differences
-        return jsonify(""), 200
+        return jsonify([[["none","No Changes Found"]]]), 200
     elif status == 10:
         #case where one of the configs isn't found
-        return jsonify("Config not found error")
+        return jsonify([[["none","Config not found error"]]])
     else: 
         print("error")
-        return jsonify("Unexpected error"), 400
+        return jsonify([[["none","Unexpected error"]]]), 400

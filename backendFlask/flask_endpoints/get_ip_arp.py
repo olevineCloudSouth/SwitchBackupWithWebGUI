@@ -4,6 +4,7 @@ import paramiko
 import time
 import pandas as pd
 import configparser
+from .helpers.find_recent import find_recent
 
 passwords = []
 
@@ -88,5 +89,6 @@ def arp_check_main():
     if date == 'current':
         switch_info = get_info()
         return jsonify(get_curr_arps(check_switch, switch_info)), 200
-    arp_path = "/mnt/sda/switch-configs/{}/{}_arps-{}.txt".format(date, check_switch, date)
+    arp_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'arps')
+
     return jsonify(get_ip_arp(arp_path)), 200

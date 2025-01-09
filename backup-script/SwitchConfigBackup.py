@@ -86,13 +86,14 @@ def save_output(switch_name, switch_output):
     #grab current date and convert to string of xx-xx-xxxx format
     curr_time = datetime.now()
     date_string = curr_time.strftime("%m-%d-%Y").strip()
+    time_date_string = curr_time.strftime("%m-%d-%Y-H%").strip()
     #specify directory
-    directory = ".\mnt\sda\switch-configs\\" + date_string
+    directory = "/mnt/sda/switch-backups/" + date_string
     #create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
     #create the file name with format switchname_config-xx-xx-xxxx.txt
-    filename = "{}_config-{}.txt".format(switch_name, date_string)
+    filename = "{}_config-{}.txt".format(switch_name, time_date_string)
     #join the directory path to the filename
     filepath = os.path.join(directory, filename)
     #create the file and write out the config
@@ -100,8 +101,7 @@ def save_output(switch_name, switch_output):
         f.write(switch_output.running_config)
     print("\nsaved", switch_name, "config")
 
-
-    filename = "{}_arps-{}.txt".format(switch_name, date_string)
+    filename = "{}_arps-{}.txt".format(switch_name, time_date_string)
     #join the directory path to the filename
     filepath = os.path.join(directory, filename)
     #create the file and write out the config
@@ -109,8 +109,7 @@ def save_output(switch_name, switch_output):
         f.write(switch_output.ip_arp)
     print("\nsaved", switch_name, "arps")
 
-
-    filename = "{}_mac-{}.txt".format(switch_name, date_string)
+    filename = "{}_mac-{}.txt".format(switch_name, time_date_string)
     #join the directory path to the filename
     filepath = os.path.join(directory, filename)
     #create the file and write out the config
@@ -118,8 +117,7 @@ def save_output(switch_name, switch_output):
         f.write(switch_output.mac_address_table)
     print("\nsaved", switch_name, "mac address table")
 
-
-    filename = "{}_int-{}.txt".format(switch_name, date_string)
+    filename = "{}_int-{}.txt".format(switch_name, time_date_string)
     #join the directory path to the filename
     filepath = os.path.join(directory, filename)
     #create the file and write out the config
@@ -127,9 +125,8 @@ def save_output(switch_name, switch_output):
         f.write(switch_output.int_status)
     print("\nsaved", switch_name, "int status")
 
-
 def get_info():
-    df = pd.read_csv(".\switch_ips.csv")
+    df = pd.read_csv("/opt/backup-script/switch_ips.csv")
     return df
 
 def thread_run(ip, name):
@@ -202,13 +199,12 @@ def save_errors(switch_errors):
     #convert errors to dataframe for panda's
     df = pd.DataFrame(switch_errors, columns=['IP', 'Name', 'Error'])
     curr_time = datetime.now()
-    date_string = curr_time.strftime("%m-%d-%Y").strip()
+    time_date_string = curr_time.strftime("%m-%d-%Y-H%").strip()
     #create the file name with format switchname_config-xx-xx-xxxx.txt
-    filename = ".\switches_with_issues-{}.csv".format(date_string)
+    filename = "/mnt/sda/switch-backups/switch_error_logs-{}.csv".format(time_date_string)
     #join the directory path to the filename
     df.to_csv(filename, index=False)
     return filename
-
 
 def main():
     switch_info = get_info()
@@ -240,16 +236,9 @@ def main():
     print("All threads finished.")
     print("Finito")
 
-    
-    
-
-    
-
-
-
 if __name__ == "__main__":
     config = configparser.ConfigParser()
-    config.read('.\pwds.ini')
+    config.read('/opt/backup-script/pwds.ini')
 
     for key in config['pwds']:
         passwords.append(config['pwds'][key])

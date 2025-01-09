@@ -3,10 +3,11 @@ from flask_cors import cross_origin
 import pandas as pd
 import re
 import ipaddress
+from .helpers.find_recent import find_recent
 
 def get_info():
-    df = pd.read_csv("/opt/backup-script/switch_ips.csv") #prod server csv location
-   #df = pd.read_csv("./switch_ips.csv") #for testing purposes
+    #df = pd.read_csv("/opt/backup-script/switch_ips.csv") #prod server csv location
+    df = pd.read_csv(".\\switch_ips.csv") #for testing purposes
     return df
 
 def subnet_str_to_array(subnet_str):
@@ -21,7 +22,7 @@ def subnet_str_to_array(subnet_str):
     #use ipaddress lib to make network object
     network = ipaddress.IPv4Network(f"{gateway_ip}/{subnet}", strict=False)
     #use .hosts to get all ips in network
-    ips = [str(ip) for ip in network.hosts()]
+    ips = [str(ip) for ip in network]
     #return the array of ips and the /xx notation for the subnet
     return ips, network.prefixlen
 
@@ -39,8 +40,7 @@ def check_ip(ip,date):
     for index, row in switch_info.iterrows():
         switch_name = row['name']
         #grab its config file
-        config_location = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(date, switch_name, date) #prod server config location
-        #config_location = "./backups/{}/{}_config-{}.txt".format(date, switch_name, date) #for testing purposes
+        config_location = find_recent('/mnt/sda/switch-backups/', switch_name, 'config')
         try:
             with open(config_location, 'r') as config:
                 config_text = config.read()
@@ -60,9 +60,10 @@ def check_ip(ip,date):
                             #if ip in the array of ips that we got then we found a switch that the ip is in so we grab the vlan and add it to our result list
                             vlan_regex = rf"interface Vlan(\d{{3}})[^!]*{re.escape(subnet)}"
                             vlan_match = re.findall(vlan_regex, config_text)
-                            temp_octets = ips[0].split('.')[0], ips[0].split('.')[1], ips[0].split('.')[2], ips[0].split('.')[3]
-                            subnet_ip = ".".join([temp_octets[0], temp_octets[1], temp_octets[2], str(int(temp_octets[3]) - 1)])
-                            switches_with_ip.append({"switch_name": switch_name, "subnet": f"{subnet_ip}/{notation}","vlan": vlan_match[0]})
+                            if vlan_match:
+                                temp_octets = ips[0].split('.')[0], ips[0].split('.')[1], ips[0].split('.')[2], ips[0].split('.')[3]
+                                subnet_ip = ".".join([temp_octets[0], temp_octets[1], temp_octets[2], str(int(temp_octets[3]))])
+                                switches_with_ip.append({"switch_name": switch_name, "subnet": f"{subnet_ip}/{notation}","vlan": vlan_match[0]})
         except FileNotFoundError:
             print(f"File not found: {config_location}. Skipping...")
         except Exception as e:
@@ -96,3 +97,4 @@ def track_ip_main():
         return jsonify("That date is not the correct format. ERROR!"), 400
     #return json list of results
     return jsonify(check_ip(ip, date)), 200
+

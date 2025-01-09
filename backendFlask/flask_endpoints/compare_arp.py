@@ -4,7 +4,8 @@ import difflib
 import configparser
 
 from .get_ip_arp import get_info, get_curr_arps
-from .compare_help import format_diff, check_changes
+from .helpers.find_recent import find_recent
+from .helpers.compare_help import format_diff, check_changes
 
 passwords = []
 
@@ -58,10 +59,12 @@ def compare_arp_main():
     check_switch = request.args.get('switch_name')
     if check_switch == None or new_date == None or old_date == None:
         return jsonify("Error missing params"), 400
-    past_arp = ".\\switch-backups\\{}_arps-{}.txt".format(check_switch, old_date)
-    #past_arp = "/mnt/sda/switch-configs/{}/{}_arps-{}.txt".format(old_date, check_switch, old_date)
-    curr_arp = ".\\switch-backups\\{}_arps-{}.txt".format(check_switch, new_date)
-    #curr_arp = "/mnt/sda/switch-configs/{}/{}_arps-{}.txt".format(new_date, check_switch, new_date)
+    
+    mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
+    mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
+    past_arp = find_recent(mainpath_old, check_switch, 'arps')
+    curr_arp = find_recent(mainpath_curr, check_switch, 'arps')
+
     if new_date == 'current': 
         curr_arp = 'current'
     formatted_diff, status = compare_arps(curr_arp, past_arp, check_switch)

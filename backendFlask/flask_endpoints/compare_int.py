@@ -4,7 +4,8 @@ import difflib
 import configparser
 
 from .get_int_status import get_info, get_curr_int
-from .compare_help import format_diff, check_changes
+from .helpers.compare_help import format_diff, check_changes
+from .helpers.find_recent import find_recent
 
 passwords = []
 
@@ -58,10 +59,11 @@ def compare_int_main():
     check_switch = request.args.get('switch_name')
     if check_switch == None or new_date == None or old_date == None:
         return jsonify("Error missing params"), 400
-    past_int = ".\\switch-backups\\{}_int-{}.txt".format(check_switch, old_date)
-    #past_int = "/mnt/sda/switch-configs/{}/{}_int-{}.txt".format(old_date, check_switch, old_date)
-    curr_int = ".\\switch-backups\\{}_int-{}.txt".format(check_switch, new_date)
-    #curr_int = "/mnt/sda/switch-configs/{}/{}_int-{}.txt".format(new_date, check_switch, new_date)
+    mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
+    mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
+    past_int = find_recent(mainpath_old, check_switch, 'int')
+    curr_int = find_recent(mainpath_curr, check_switch, 'int')
+
     if new_date == 'current': 
         curr_int = 'current'
     formatted_diff, status = compare_int(curr_int, past_int, check_switch)

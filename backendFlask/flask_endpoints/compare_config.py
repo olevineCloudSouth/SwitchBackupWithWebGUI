@@ -4,7 +4,8 @@ import difflib
 import configparser
 
 from .get_config import get_curr_config, get_info
-from .compare_help import format_diff, check_changes
+from .helpers.compare_help import format_diff, check_changes
+from .helpers.find_recent import find_recent
 
 
 passwords = []
@@ -59,10 +60,11 @@ def compare_config_main():
     check_switch = request.args.get('switch_name')
     if check_switch == None or new_date == None or old_date == None:
         return jsonify("Error missing params"), 400
-    #past_config = "./flask_endpoints/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
-    past_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(old_date, check_switch, old_date)
-    #curr_config = "./flask_endpoints/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
-    curr_config = "/mnt/sda/switch-configs/{}/{}_config-{}.txt".format(new_date, check_switch, new_date)
+    mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
+    mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
+    past_config = find_recent(mainpath_old, check_switch, 'config')
+    curr_config = find_recent(mainpath_curr, check_switch, 'config')
+
     if new_date == 'current': 
         curr_config = 'current'
     formatted_diff, status = compare_configs(curr_config, past_config, check_switch)

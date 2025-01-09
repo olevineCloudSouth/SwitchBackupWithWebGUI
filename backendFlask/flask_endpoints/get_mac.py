@@ -4,6 +4,7 @@ import paramiko
 import time
 import pandas as pd
 import configparser
+from .helpers.find_recent import find_recent
 
 passwords = []
 
@@ -88,5 +89,6 @@ def mac_check_main():
     if date == 'current':
         switch_info = get_info()
         return jsonify(get_curr_mac(check_switch, switch_info)), 200
-    mac_path = "/mnt/sda/switch-configs/{}/{}_mac-{}.txt".format(date, check_switch, date)
+    mac_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'mac')
+
     return jsonify(get_mac(mac_path)), 200

@@ -4,7 +4,8 @@ import difflib
 import configparser
 
 from .get_mac import get_info, get_curr_mac
-from .compare_help import format_diff, check_changes
+from .helpers.compare_help import format_diff, check_changes
+from .helpers.find_recent import find_recent
 
 passwords = []
 
@@ -58,10 +59,11 @@ def compare_mac_main():
     check_switch = request.args.get('switch_name')
     if check_switch == None or new_date == None or old_date == None:
         return jsonify("Error missing params"), 400
-    past_mac = ".\\switch-backups\\{}_mac-{}.txt".format(check_switch, old_date)
-    #past_mac = "/mnt/sda/switch-configs/{}/{}_mac-{}.txt".format(old_date, check_switch, old_date)
-    curr_mac = ".\\switch-backups\\{}_mac-{}.txt".format(check_switch, new_date)
-    #curr_mac = "/mnt/sda/switch-configs/{}/{}_mac-{}.txt".format(new_date, check_switch, new_date)
+    mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
+    mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
+    past_mac = find_recent(mainpath_old, check_switch, 'mac')
+    curr_mac = find_recent(mainpath_curr, check_switch, 'mac')
+
     if new_date == 'current': 
         curr_mac = 'current'
     formatted_diff, status = compare_mac(curr_mac, past_mac, check_switch)

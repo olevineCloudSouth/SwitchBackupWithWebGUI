@@ -1,58 +1,91 @@
+/* General Button Styling */
 button {
     display: block;
     margin: 0 auto;
-    padding: 10px 20px; /* Increase padding for a bigger button */
-    font-size: 18px; /* Increase font size */
-    background-color: #4CAF50; /* Green */
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #398efd;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
-
+button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
 button:hover {
-    background-color: #45a049; /* Darker green */
+    background-color: #155ab4;
 }
 
+/* Compare Button Specific Styling */
 .compare-button {
-    display: block;
-    margin: 20px auto; /* Centered with some space from the top */
-    padding: 10px 20px; /* Increase padding for a bigger button */
-    font-size: 18px; /* Increase font size */
-    background-color: #008CBA; /* Blue */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    margin: 20px auto;
+    background-color: #398efd;
 }
-
 .compare-button:hover {
-    background-color: #005f7e; /* Darker blue */
+    background-color: #155ab4;
 }
 
+/* Input Container Styling */
 .input-container {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
 }
-
 .input-group {
     width: 45%;
 }
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #333;
+}
+input[type="date"],
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+input[type="text"]::placeholder,
+input[type="date"]::placeholder {
+    color: #999;
+}
 
+/* Checkbox Styling */
+.checkbox-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.checkbox-container input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+.checkbox-container label {
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+}
+
+/* Output Container Styling */
 .output-container {
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
-
 .output-box {
-    resize: both;
     width: 45%;
+    resize: both;
 }
-
-.config-display {
-    height: 100px;
-    width: 100%;
+.output-display {
+    height: 250px;
     overflow-y: scroll;
     background-color: #f2f2f2;
     border: 1px solid #ccc;
@@ -61,111 +94,98 @@ button:hover {
     resize: both;
 }
 
-.original-config-display {
+/* Copy Button Styling */
+.copy-button {
+    padding: 3px 6px;
+    font-size: 10px;
+    background-color: #cacaca;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.copy-button:hover {
+    background-color: #797979;
+}
+
+/* Compare Display Styling */
+.compare-display {
     height: 300px;
     width: 100%;
     overflow-y: scroll;
     background-color: #f2f2f2;
     border: 1px solid #ccc;
     padding: 5px;
+    margin-top: 20px;
     resize: both;
-    margin-top: 20px; /* Adjust margin as needed */
-}
-#switch {
-    display: block;
-    margin: 0 auto;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
 }
 
-#switch option {
-    padding: 10px;
-}
-input[type="text"] {
-    display: block;
+/* Searchable Select Styling */
+.searchable-select {
+    position: relative;
+    width: 300px;
     margin: 0 auto;
+}
+.searchable-select input,
+.searchable-select select {
+    width: 100%;
     padding: 10px;
     font-size: 16px;
-    border-radius: 5px;
     border: 1px solid #ccc;
-    width: 100%;
     box-sizing: border-box;
 }
-
-/* Style placeholder text */
-input[type="text"]::placeholder {
-    color: #999;
+.searchable-select input {
+    border-radius: 5px 5px 0 0;
+}
+.searchable-select select {
+    border-radius: 0 0 5px 5px;
 }
 
-/* Style date input */
-input[type="date"] {
-    display: block;
-    margin: 0 auto;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Style placeholder text for date input */
-input[type="date"]::placeholder {
-    color: #999;
-}
-
-h1 {
-    text-align: center; /* Center the text */
-    border-bottom: 2px solid #4CAF50; /* Add a border at the bottom with green color */
-    padding-bottom: 10px; /* Add some space below the border */
-    margin-bottom: 20px; /* Add space below the header */
-    font-size: 24px; /* Increase font size */
-}
-button:disabled {
-    background-color: grey;
-    cursor: not-allowed;
-}
+/* Banner Styling */
 .banner {
-    background-color: #4CAF50;
+    background-color: #1b75eb;
     color: white;
     padding: 10px 0;
     text-align: left;
     width: 100%;
-    margin-bottom: 20px; /* Adjust this value to control the gap */
+    margin-bottom: 20px;
 }
-
 .banner a {
     color: white;
     font-weight: bold;
     margin: 0 20px;
     text-decoration: none;
 }
-
 .banner a:hover {
     text-decoration: underline;
 }
-
 .banner a.active {
-    font-size: 18px; /* Larger font size for the active link */
-    text-decoration: underline; /* Optional: underline for emphasis */
+    font-size: 18px;
+    text-decoration: underline;
 }
+
+/* Results List Styling */
 .results-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
-
 #resultsList {
     list-style-type: none;
-    padding: 15;
+    padding: 15px;
     text-align: left;
 }
-
 #resultsList li {
     background-color: #f0f0f0;
     font-size: 20px;
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
+}
+.data-type-dropdown {
+    width: 20%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }

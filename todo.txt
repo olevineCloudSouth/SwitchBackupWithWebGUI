@@ -1,7 +1,0 @@
-add more useful error code messaeges for
-    mac adddress arp config and int status can't be found from today. add something like maybe give it an hour
-    ip tracker can't find any configs that contain this IP from this date. Configs could be missing or just not have the IP routed. Try another date to be sure
-
-add a piece of code to delete anything older than a year !!!DONE!!!
-
-

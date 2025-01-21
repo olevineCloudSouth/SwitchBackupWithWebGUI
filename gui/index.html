@@ -9,41 +9,57 @@
 <body>
 
     <div class="banner">
-        <a href="index.html" class="active">Switch Config Viewer</a>
+        <a href="index.html" class="active">Switch Backup/Data Viewer</a>
         <a href="ip_trackdown.html">IP Tracker</a>
     </div>
-    <select id="switch">
-        <!-- Options will be populated dynamically -->
-    </select>
+
+    <div class="searchable-select">
+        <input type="text" id="searchInput" placeholder="Search for a switch...">
+        <select id="switch">
+            <!-- Options will be dynamically populated -->
+        </select>
+        <select id="dataTypeDropdown" class="data-type-dropdown">
+            <option value="configs">Configs</option>
+            <option value="mac-tables">Mac Address Tables</option>
+            <option value="interface-statuses">Interface Statuses</option>
+            <option value="arp-tables">Arp Tables</option>
+        </select>
+    </div>
     <br>
     <div class="input-container">
         <div class="input-group">
             <label for="date1">Enter Old Date:</label>
-            <input type="text" id="date1" placeholder="MM-DD-YYYY">
+            <input type="date" id="date1">
         </div>
         <div class="input-group">
             <label for="date2">Enter New Date:</label>
-            <input type="text" id="date2" placeholder="MM-DD-YYYY">
+            <input type="date" id="date2">
+            <div class="checkbox-container">
+                <input type="checkbox" id="useCurrent2">
+                <label for="useCurrent2">Use Current Date Instead</label>
+            </div>
         </div>
     </div>
     <div class="output-container">
         <div class="output-box">
-            <label for="configDisplay1">Switch Config 1:</label>
-            <div id="configDisplay1" class="config-display"></div>
+            <div id="Display1" class="output-display"></div>
+            <button class="copy-button" onclick="copyToClipboard('Display1')">Copy to Clipboard</button>
         </div>
         <div class="output-box">
-            <label for="configDisplay2">Switch Config 2:</label>
-            <div id="configDisplay2" class="config-display"></div>
+            <div id="Display2" class="output-display"></div>
+            <button class="copy-button" onclick="copyToClipboard('Display2')">Copy to Clipboard</button>
         </div>
     </div>
 
     <!-- Original elements -->
     
     <br>
-    <button id="getConfigsButton" onclick="getConfigs()">Get Configs</button>
+    <button id="getDataButton" onclick="getDataMain()">Go</button>
     <br>
-    <div id="compareDisplay" class="original-config-display"></div>
-    <button id="compareConfigsButton" onclick="compareConfigs()" class="compare-button">Compare Configs</button>
+
+
+    <div id="compareDisplay" class="compare-display"></div>
+    <button id="compareButton" onclick="compareMain()" class="compare-button">Compare</button>
 
     <script src="script.js"></script>
 </body>

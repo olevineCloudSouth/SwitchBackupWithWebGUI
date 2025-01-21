@@ -7,7 +7,8 @@ function getConfigs() { const switchName = document.getElementById('switch').val
     document.getElementById('configDisplay1').innerText = ""; 
     document.getElementById('configDisplay2').innerText = ""; 
     document.getElementById('getConfigsButton').disabled = true; 
-    document.getElementById('getConfigsButton').style.backgroundColor = 'grey'; fetch(new_url, {
+    document.getElementById('getConfigsButton').style.backgroundColor = 'grey';
+     fetch(new_url, {
         method: 'GET', headers: { 'Content-Type': 'application/json'
         }
     })

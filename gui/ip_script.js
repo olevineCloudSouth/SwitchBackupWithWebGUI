@@ -1,5 +1,20 @@
+function formatDate(dateStr) {
+    const dateParts = dateStr.split('-'); // dateStr is in yyyy-mm-dd format
+    const year = dateParts[0];
+    let month = dateParts[1];
+    let day = dateParts[2];
+    
+    // Ensure the month and day are in two digits
+    month = month.padStart(2, '0');
+    day = day.padStart(2, '0');
+
+    return month + '-' + day + '-' + year;
+}
+
 function track_ip() { 
-    const ip_date = document.getElementById('ip_date').value; 
+    const ip_date = document.getElementById('ip_date').value;
+    //format date input
+    ip_date = formateDate(ip_date)
     const ip = document.getElementById('ip_to_track').value;
     const url = `/api/track_ip?date=${encodeURIComponent(ip_date)}&ip=${encodeURIComponent(ip)}`;
     console.log(url)

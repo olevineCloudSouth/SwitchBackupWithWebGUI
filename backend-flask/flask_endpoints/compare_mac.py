@@ -61,11 +61,12 @@ def compare_mac_main():
         return jsonify("Error missing params"), 400
     mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
     mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
-    past_mac = find_recent(mainpath_old, check_switch, 'mac')
-    curr_mac = find_recent(mainpath_curr, check_switch, 'mac')
 
+    past_mac = find_recent(mainpath_old, check_switch, 'mac')
     if new_date == 'current': 
         curr_mac = 'current'
+    else:
+        curr_mac = find_recent(mainpath_curr, check_switch, 'mac')
     formatted_diff, status = compare_mac(curr_mac, past_mac, check_switch)
     if status == 12 and formatted_diff != None:
         #case where there are differences

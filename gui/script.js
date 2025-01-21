@@ -105,7 +105,7 @@ function formatDate(dateStr) {
     return month + '-' + day + '-' + year;
 }
 
-function getDataMain(){
+async function getDataMain() {
     const date1 = document.getElementById('date1').value;
     const date2 = document.getElementById('date2').value;
     const useCurrent2 = document.getElementById('useCurrent2');
@@ -118,64 +118,59 @@ function getDataMain(){
         'arp-tables': 'get_ip_arp',
         'mac-tables': 'get_mac',
     };
-    const endpoint = apiEndpoints[dataType]
+
+    const endpoint = apiEndpoints[dataType];
     if (!endpoint) {
         alert('Invalid data type selected.');
         return;
     }
+
     getDataButton.disabled = true;
-    //clear displays
+
+    // Clear displays
     document.getElementById('Display1').innerText = "";
     document.getElementById('Display2').innerText = "";
 
-    var old_date = formatDate(date1)
+    const old_date = formatDate(date1);
+    const new_date = useCurrent2.checked ? 'current' : formatDate(date2);
 
-    if (useCurrent2.checked == true){
-        var new_date = 'current';
-    } else{
-        var new_date = formatDate(date2)
+    // Define URLs
+    const old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}`;
+    const new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
+
+    try {
+        // Fetch old date data
+        console.log(old_url);
+        const oldResponse = await fetch(old_url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        const oldData = await oldResponse.json();
+        document.getElementById('Display1').innerText = oldData;
+    } catch (error) {
+        console.error('Error fetching config (old date):', error);
     }
 
-    //code to send api request for old date
-    const old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}`;
-    console.log(old_url)
-    fetch(old_url, {method: 'GET', headers: { 'Content-Type': 'application/json'}})
-        .then(response => response.json()) 
-        .then(outputText => { 
-            document.getElementById('Display1').innerText = outputText;
-            //re-enable la buttone
-            document.getElementById('getDataButton').disabled = false; 
-            })
-        .catch(error => {
-            console.error('Error fetching config:', error)
-            //re-enable la buttone
-            document.getElementById('getDataButton').disabled = false; 
-            });
-
-    //code to send api request for new date
-    const new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
-    console.log(new_url)
-    fetch(new_url, {method: 'GET', headers: { 'Content-Type': 'application/json'}})
-        .then(response => response.json()) 
-        .then(outputText => { 
-            document.getElementById('Display2').innerText = outputText;
-            //re-enable la buttone
-            document.getElementById('getDataButton').disabled = false; 
-            })
-        .catch(error => { 
-            console.error('Error fetching config:', error);
-            //re-enable la buttone
-            document.getElementById('getDataButton').disabled = false; 
-            });
+    try {
+        // Fetch new date data
+        console.log(new_url);
+        const newResponse = await fetch(new_url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        const newData = await newResponse.json();
+        document.getElementById('Display2').innerText = newData;
+    } catch (error) {
+        console.error('Error fetching config (new date):', error);
+    } finally {
+        // Re-enable the button
+        getDataButton.disabled = false;
+    }
 }
 
-function compareMain(){
+async function compareMain() {
     const switchName = document.getElementById('switch').value; 
-    const new_date = document.getElementById('date2').value; 
-    const old_date = document.getElementById('date1').value; 
+    const new_date_unformat = document.getElementById('date2').value; 
+    const old_date_unformat = document.getElementById('date1').value; 
+    const useCurrent2 = document.getElementById('useCurrent2');
     document.getElementById('compareButton').disabled = true; 
     document.getElementById('compareDisplay').innerText = "";
-
+    const old_date = formatDate(old_date_unformat);
+    const new_date = useCurrent2.checked ? 'current' : formatDate(new_date_unformat);
     const dataType = document.getElementById('dataTypeDropdown').value;
     const apiEndpoints = {
         'configs': 'compare_config',
@@ -183,50 +178,46 @@ function compareMain(){
         'arp-tables': 'compare_arp',
         'mac-tables': 'compare_mac',
     };
-    const endpoint = apiEndpoints[dataType]
+    const endpoint = apiEndpoints[dataType];
     if (!endpoint) {
         alert('Invalid data type selected.');
         return;
     }
 
-    //send api request
+    // Send API request
     const url = `/api/${encodeURIComponent(endpoint)}?old_date=${encodeURIComponent(old_date)}&new_date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
-    console.log(url)
-    fetch(url, {method: 'GET', headers: { 'Content-Type': 'application/json'}})
-        .then(response => response.json()) 
-        .then(outputText => { 
-            document.getElementById('compareDisplay').innerText = outputText;
-            document.getElementById('compareButton').disabled = false;
-            })
-        .catch(error => console.error('Error fetching config:', error));
+    console.log(url);
+    try {
+        const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        let outputArray = await response.json();
+        outputArray = outputArray[0]
+        // Process and format the output
+        const compareDisplay = document.getElementById('compareDisplay');
+        compareDisplay.innerHTML = ""; // Clear previous content
 
-    
+        outputArray.forEach(([status, text]) => {
+            const lineElement = document.createElement('div');
+            lineElement.textContent = text;
+
+            if (status === 'same') {
+                lineElement.style.color = 'grey';
+                lineElement.style.paddingLeft = '10px'; // Indent
+            } else if (status === 'add') {
+                lineElement.style.color = 'green';
+                lineElement.style.fontWeight = 'bold';
+                lineElement.textContent = `+ ${text}`; // Prefix with "+"
+            } else if (status === 'del') {
+                lineElement.style.color = 'red';
+                lineElement.style.fontWeight = 'bold';
+                lineElement.textContent = `- ${text}`; // Prefix with "-"
+            }
+
+            compareDisplay.appendChild(lineElement);
+        });
+
+    } catch (error) {
+        console.error('Error fetching config:', error);
+    } finally {
+        document.getElementById('compareButton').disabled = false;
+    }
 }
-
-//remove below this line when done everything below here is for testing
-function populateSwitches() {
-    const switchDropdown = document.getElementById('switch');
-
-    // Example test data
-    const testSwitches = [
-        "Switch_A", 
-        "Switch_B", 
-        "Switch_C", 
-        "Switch_D", 
-        "Switch_E", 
-        "Switch_F",
-        "Cs-D-Access-23202"
-    ];
-
-    testSwitches.forEach(switchName => {
-        const option = document.createElement('option');
-        option.value = switchName;
-        option.textContent = switchName;
-        switchDropdown.appendChild(option);
-    });
-}
-
-// Call the function on page load to populate with test data
-window.onload = function () {
-    populateSwitches();
-};

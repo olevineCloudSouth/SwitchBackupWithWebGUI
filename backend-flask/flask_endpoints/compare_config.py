@@ -63,10 +63,10 @@ def compare_config_main():
     mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
     mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
     past_config = find_recent(mainpath_old, check_switch, 'config')
-    curr_config = find_recent(mainpath_curr, check_switch, 'config')
-
     if new_date == 'current': 
         curr_config = 'current'
+    else:
+        curr_config = find_recent(mainpath_curr, check_switch, 'config')
     formatted_diff, status = compare_configs(curr_config, past_config, check_switch)
     if status == 12 and formatted_diff != None:
         #case where there are differences

@@ -33,16 +33,13 @@ def switch_touch(ip, password):
         #wait until the shell is ready
         while not ssh_shell.recv_ready():
             pass
-        #write mem to save the config
-        ssh_shell.send("write mem\n")
-        #print out config
         ssh_shell.send("sh ip arp\n")
         #wait for it to finish
         time.sleep(5)
         #load config into string to pass
         switch_output = ssh_shell.recv(65535).decode('utf-8')
         i = 0
-        while not switch_output.endswith('#') or len(switch_output) < 10:
+        while not switch_output.endswith('#') or len(switch_output) < 50:
             time.sleep(1)
             switch_output += ssh_shell.recv(65535).decode('utf-8')
             i += 1

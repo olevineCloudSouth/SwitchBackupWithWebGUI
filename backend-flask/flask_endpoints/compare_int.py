@@ -61,11 +61,12 @@ def compare_int_main():
         return jsonify("Error missing params"), 400
     mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
     mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
-    past_int = find_recent(mainpath_old, check_switch, 'int')
-    curr_int = find_recent(mainpath_curr, check_switch, 'int')
 
+    past_int = find_recent(mainpath_old, check_switch, 'int')
     if new_date == 'current': 
         curr_int = 'current'
+    else:
+        curr_int = find_recent(mainpath_curr, check_switch, 'int')
     formatted_diff, status = compare_int(curr_int, past_int, check_switch)
     if status == 12 and formatted_diff != None:
         #case where there are differences

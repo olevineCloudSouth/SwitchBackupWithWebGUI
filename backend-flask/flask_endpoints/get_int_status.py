@@ -33,9 +33,6 @@ def switch_touch(ip, password):
         #wait until the shell is ready
         while not ssh_shell.recv_ready():
             pass
-        #write mem to save the config
-        ssh_shell.send("write mem\n")
-        #print out config
         ssh_shell.send("sh int status\n")
         #wait for it to finish
         time.sleep(5)

@@ -47,11 +47,11 @@ web_compare_int = Blueprint('web_compare_int', __name__)
 @web_compare_int.route('/compare_int', methods=['GET'])
 @cross_origin()
 def compare_int_main():
-    #config = configparser.ConfigParser()
-    #config.read('/opt/backup-script/pwds.ini')
+    config = configparser.ConfigParser()
+    config.read('/opt/backup-script/pwds.ini')
 
-    #for key in config['pwds']:
-    #    passwords.append(config['pwds'][key])
+    for key in config['pwds']:
+        passwords.append(config['pwds'][key])
 
     new_date = request.args.get('new_date')
     old_date = request.args.get('old_date')
@@ -62,11 +62,20 @@ def compare_int_main():
     mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
     mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
 
-    past_int = find_recent(mainpath_old, check_switch, 'int')
-    if new_date == 'current': 
-        curr_int = 'current'
+    if request.args.get('old_hour'):
+        old_hour = request.args.get('old_hour')
+        past_int = f'/mnt/sda/switch-backups/{old_date}/{check_switch}_int-{old_date}-{old_hour}.txt'
     else:
-        curr_int = find_recent(mainpath_curr, check_switch, 'int')
+        past_int = find_recent(mainpath_old, check_switch, 'int')
+    if request.args.get('new_hour'):
+        new_hour = request.args.get('new_hour')
+        curr_int = f'/mnt/sda/switch-backups/{new_date}/{check_switch}_int-{new_date}-{new_hour}.txt'
+    else:
+        if new_date == 'current': 
+            curr_int = 'current'
+        else:
+            curr_int = find_recent(mainpath_curr, check_switch, 'int')
+
     formatted_diff, status = compare_int(curr_int, past_int, check_switch)
     if status == 12 and formatted_diff != None:
         #case where there are differences

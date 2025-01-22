@@ -130,13 +130,24 @@ async function getDataMain() {
     // Clear displays
     document.getElementById('Display1').innerText = "";
     document.getElementById('Display2').innerText = "";
+    document.getElementById('compareDisplay').innerText = "";
 
     const old_date = formatDate(date1);
     const new_date = useCurrent2.checked ? 'current' : formatDate(date2);
-
-    // Define URLs
-    const old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}`;
-    const new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
+    const selectedOldButton = document.querySelector('.old-date-select-button.selected');
+    const selectedNewButton = document.querySelector('.new-date-select-button.selected');
+    const oldHour = selectedOldButton ? selectedOldButton.dataset.value : "00";
+    const newHour = selectedNewButton ? selectedNewButton.dataset.value : "00";
+    if (oldHour == 'last'){
+        const old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}`;
+    } else {
+        const old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}&hour=${encodeURIComponent(oldHour)}`;
+    }
+    if (newHour == 'last'){
+        const new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
+    } else {
+        const new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}&hour=${encodeURIComponent(newHour)}`;
+    }
 
     try {
         // Fetch old date data
@@ -220,4 +231,33 @@ async function compareMain() {
     } finally {
         document.getElementById('compareButton').disabled = false;
     }
+}
+
+
+function selectOldTime(button) {
+    // Get all buttons in the same group
+    const buttons = document.querySelectorAll('.old-date-select-button');
+
+    // Remove 'selected' class from all buttons
+    buttons.forEach(btn => btn.classList.remove('selected'));
+
+    // Add 'selected' class to the clicked button
+    button.classList.add('selected');
+
+    // Optional: Log the selected value or take additional actions
+    console.log(`Selected time: ${button.getAttribute('data-value')}`);
+}
+
+function selectNewTime(button) {
+    // Get all buttons in the same group
+    const buttons = document.querySelectorAll('.new-date-select-button');
+
+    // Remove 'selected' class from all buttons
+    buttons.forEach(btn => btn.classList.remove('selected'));
+
+    // Add 'selected' class to the clicked button
+    button.classList.add('selected');
+
+    // Optional: Log the selected value or take additional actions
+    console.log(`Selected time: ${button.getAttribute('data-value')}`);
 }

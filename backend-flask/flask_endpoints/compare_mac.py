@@ -62,11 +62,20 @@ def compare_mac_main():
     mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
     mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
 
-    past_mac = find_recent(mainpath_old, check_switch, 'mac')
-    if new_date == 'current': 
-        curr_mac = 'current'
+    if request.args.get('old_hour'):
+        old_hour = request.args.get('old_hour')
+        past_mac = f'/mnt/sda/switch-backups/{old_date}/{check_switch}_mac-{old_date}-{old_hour}.txt'
     else:
-        curr_mac = find_recent(mainpath_curr, check_switch, 'mac')
+        past_mac = find_recent(mainpath_old, check_switch, 'mac')
+    if request.args.get('new_hour'):
+        new_hour = request.args.get('new_hour')
+        curr_mac = f'/mnt/sda/switch-backups/{new_date}/{check_switch}_mac-{new_date}-{new_hour}.txt'
+    else:
+        if new_date == 'current': 
+            curr_mac = 'current'
+        else:
+            curr_mac = find_recent(mainpath_curr, check_switch, 'mac')
+
     formatted_diff, status = compare_mac(curr_mac, past_mac, check_switch)
     if status == 12 and formatted_diff != None:
         #case where there are differences

@@ -62,11 +62,23 @@ def compare_config_main():
         return jsonify("Error missing params"), 400
     mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
     mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
-    past_config = find_recent(mainpath_old, check_switch, 'config')
-    if new_date == 'current': 
-        curr_config = 'current'
+
+
+    if request.args.get('old_hour'):
+        old_hour = request.args.get('old_hour')
+        past_config = f'/mnt/sda/switch-backups/{old_date}/{check_switch}_config-{old_date}-{old_hour}.txt'
     else:
-        curr_config = find_recent(mainpath_curr, check_switch, 'config')
+        past_config = find_recent(mainpath_old, check_switch, 'config')
+    if request.args.get('new_hour'):
+        new_hour = request.args.get('new_hour')
+        curr_config = f'/mnt/sda/switch-backups/{new_date}/{check_switch}_config-{new_date}-{new_hour}.txt'
+    else:
+        if new_date == 'current': 
+            curr_config = 'current'
+        else:
+            curr_config = find_recent(mainpath_curr, check_switch, 'config')
+
+
     formatted_diff, status = compare_configs(curr_config, past_config, check_switch)
     if status == 12 and formatted_diff != None:
         #case where there are differences

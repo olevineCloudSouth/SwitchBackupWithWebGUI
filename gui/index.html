@@ -30,6 +30,15 @@
         <div class="input-group">
             <label for="date1">Enter Old Date:</label>
             <input type="date" id="date1">
+            <div class="time-selection">
+                <button class="old-date-select-button" data-value="00" onclick="selectOldTime(this)">12:00 AM</button>
+                <button class="old-date-select-button" data-value="04" onclick="selectOldTime(this)">4:00 AM</button>
+                <button class="old-date-select-button" data-value="08" onclick="selectOldTime(this)">8:00 AM</button>
+                <button class="old-date-select-button" data-value="12" onclick="selectOldTime(this)">12:00 PM</button>
+                <button class="old-date-select-button" data-value="16" onclick="selectOldTime(this)">4:00 PM</button>
+                <button class="old-date-select-button" data-value="20" onclick="selectOldTime(this)">8:00 PM</button>
+                <button class="old-date-select-button selected" data-value="last" onclick="selectOldTime(this)">Last</button>
+            </div>
         </div>
         <div class="input-group">
             <label for="date2">Enter New Date:</label>
@@ -37,6 +46,15 @@
             <div class="checkbox-container">
                 <input type="checkbox" id="useCurrent2">
                 <label for="useCurrent2">Use Current Date Instead</label>
+            </div>
+            <div class="time-selection">
+                <button class="new-date-select-button" data-value="00" onclick="selectNewTime(this)">12:00 AM</button>
+                <button class="new-date-select-button" data-value="04" onclick="selectNewTime(this)">4:00 AM</button>
+                <button class="new-date-select-button" data-value="08" onclick="selectNewTime(this)">8:00 AM</button>
+                <button class="new-date-select-button" data-value="12" onclick="selectNewTime(this)">12:00 PM</button>
+                <button class="new-date-select-button" data-value="16" onclick="selectNewTime(this)">4:00 PM</button>
+                <button class="new-date-select-button" data-value="20" onclick="selectNewTime(this)">8:00 PM</button>
+                <button class="new-date-select-button selected" data-value="last" onclick="selectNewTime(this)">Last</button>
             </div>
         </div>
     </div>

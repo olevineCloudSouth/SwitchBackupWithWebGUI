@@ -55,6 +55,8 @@ def compare_arp_main():
 
     new_date = request.args.get('new_date')
     old_date = request.args.get('old_date')
+    
+    
 
     check_switch = request.args.get('switch_name')
     if check_switch == None or new_date == None or old_date == None:
@@ -62,11 +64,22 @@ def compare_arp_main():
     
     mainpath_old = "/mnt/sda/switch-backups/{}/".format(old_date)
     mainpath_curr = "/mnt/sda/switch-backups/{}/".format(new_date)
-    past_arp = find_recent(mainpath_old, check_switch, 'arps')
-    if new_date == 'current': 
-        curr_arp = 'current'
+
+    if request.args.get('old_hour'):
+        old_hour = request.args.get('old_hour')
+        past_arp = f'/mnt/sda/switch-backups/{old_date}/{check_switch}_arps-{old_date}-{old_hour}.txt'
     else:
-        curr_arp = find_recent(mainpath_curr, check_switch, 'arps')
+        past_arp = find_recent(mainpath_old, check_switch, 'arps')
+    if request.args.get('new_hour'):
+        new_hour = request.args.get('new_hour')
+        curr_arp = f'/mnt/sda/switch-backups/{new_date}/{check_switch}_arps-{new_date}-{new_hour}.txt'
+    else:
+        if new_date == 'current': 
+            curr_arp = 'current'
+        else:
+            curr_arp = find_recent(mainpath_curr, check_switch, 'arps')
+
+
     formatted_diff, status = compare_arps(curr_arp, past_arp, check_switch)
     if status == 12 and formatted_diff != None:
         #case where there are differences

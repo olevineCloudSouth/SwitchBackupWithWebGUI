@@ -5,7 +5,7 @@ button {
     padding: 10px 20px;
     font-size: 18px;
     background-color: #398efd;
-    color: white;
+    color: rgb(71, 71, 71);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -98,7 +98,7 @@ input[type="date"]::placeholder {
 .copy-button {
     padding: 3px 6px;
     font-size: 10px;
-    background-color: #cacaca;
+    background-color: #e0dede;
     color: black;
     border: none;
     border-radius: 5px;
@@ -188,4 +188,47 @@ input[type="date"]::placeholder {
     font-size: 16px;
     border: 1px solid #ccc;
     box-sizing: border-box;
+}
+.time-selection {
+    display: flex;
+    gap: 10px; /* Add space between buttons */
+}
+
+.old-date-select-button {
+    margin-top: 4%;
+    font-size: 1.5rem;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #e0dede;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.old-date-select-button:hover {
+    background-color: #08dffc;
+}
+.old-date-select-button.selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+.new-date-select-button {
+    margin-top: 0.5%;
+    padding: 8px 12px;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #e0dede;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.new-date-select-button:hover {
+    background-color: #08dffc;
+}
+.new-date-select-button.selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
 }

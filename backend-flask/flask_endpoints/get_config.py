@@ -81,11 +81,16 @@ def config_check_main():
         passwords.append(pwds['pwds'][key])
     date = request.args.get('date')
     check_switch = request.args.get('switch_name')
+    if request.args.get('hour'):
+        hour = request.args.get('hour')
+        config_path = f'/mnt/sda/switch-backups/{date}/{check_switch}_config-{date}-{hour}.txt'
+    else:
+        config_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'config')
+
     if check_switch == None or date == None:
         return jsonify("Error missing params"), 400
     if date == 'current':
         switch_info = get_info()
         return jsonify(get_curr_config(check_switch, switch_info)), 200
-    config_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'config')
-    
+
     return jsonify(get_config(config_path)), 200

@@ -81,11 +81,14 @@ def mac_check_main():
         passwords.append(pwds['pwds'][key])
     date = request.args.get('date')
     check_switch = request.args.get('switch_name')
+    if request.args.get('hour'):
+        hour = request.args.get('hour')
+        mac_path = f'/mnt/sda/switch-backups/{date}/{check_switch}_mac-{date}-{hour}.txt'
+    else:
+        mac_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'mac')
     if check_switch == None or date == None:
         return jsonify("Error missing params"), 400
     if date == 'current':
         switch_info = get_info()
         return jsonify(get_curr_mac(check_switch, switch_info)), 200
-    mac_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'mac')
-
     return jsonify(get_mac(mac_path)), 200

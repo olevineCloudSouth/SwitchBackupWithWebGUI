@@ -1,0 +1,2 @@
+0 0,4,8,16,20 * * * python3 /path/backup-script/SwitchConfigBackup_No_Email.py
+0 12 * * *  python3 /path/backup-script/SwitchConfigBackup.py

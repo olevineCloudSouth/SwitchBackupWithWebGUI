@@ -81,11 +81,15 @@ def int_check_main():
         passwords.append(pwds['pwds'][key])
     date = request.args.get('date')
     check_switch = request.args.get('switch_name')
+    if request.args.get('hour'):
+        hour = request.args.get('hour')
+        int_path = f'/mnt/sda/switch-backups/{date}/{check_switch}_int-{date}-{hour}.txt'
+    else:
+        int_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'int')
     if check_switch == None or date == None:
         return jsonify("Error missing params"), 400
     if date == 'current':
         switch_info = get_info()
         return jsonify(get_curr_int(check_switch, switch_info)), 200
-    int_path = find_recent(f'/mnt/sda/switch-backups/{date}/', check_switch, 'int')
 
     return jsonify(get_int_status(int_path)), 200

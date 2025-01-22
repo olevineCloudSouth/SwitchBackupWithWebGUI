@@ -4,8 +4,8 @@ button {
     margin: 0 auto;
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #398efd;
-    color: rgb(71, 71, 71);
+    background-color: #007bff;
+    color: rgb(255 255 255);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -21,7 +21,7 @@ button:hover {
 /* Compare Button Specific Styling */
 .compare-button {
     margin: 20px auto;
-    background-color: #398efd;
+    background-color: #007bff;
 }
 .compare-button:hover {
     background-color: #155ab4;
@@ -201,12 +201,13 @@ input[type="date"]::placeholder {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #e0dede;
+    color: rgb(71, 71, 71);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .old-date-select-button:hover {
-    background-color: #08dffc;
+    background-color: #007bff;
 }
 .old-date-select-button.selected {
     background-color: #007bff;
@@ -220,12 +221,13 @@ input[type="date"]::placeholder {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #e0dede;
+    color: rgb(71, 71, 71);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .new-date-select-button:hover {
-    background-color: #08dffc;
+    background-color: #007bff;
 }
 .new-date-select-button.selected {
     background-color: #007bff;

@@ -138,17 +138,17 @@ async function getDataMain() {
     const selectedNewButton = document.querySelector('.new-date-select-button.selected');
     const oldHour = selectedOldButton ? selectedOldButton.dataset.value : "00";
     const newHour = selectedNewButton ? selectedNewButton.dataset.value : "00";
+    let old_url, new_url;
     if (oldHour == 'last'){
-        const old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}`;
+        old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}`;
     } else {
-        const old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}&hour=${encodeURIComponent(oldHour)}`;
+        old_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(old_date)}&switch_name=${encodeURIComponent(switchName)}&hour=${encodeURIComponent(oldHour)}`;
     }
     if (newHour == 'last'){
-        const new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
+        new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
     } else {
-        const new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}&hour=${encodeURIComponent(newHour)}`;
+        new_url = `/api/${encodeURIComponent(endpoint)}?date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}&hour=${encodeURIComponent(newHour)}`;
     }
-
     try {
         // Fetch old date data
         console.log(old_url);
@@ -194,10 +194,21 @@ async function compareMain() {
         alert('Invalid data type selected.');
         return;
     }
-
+    const selectedOldButton = document.querySelector('.old-date-select-button.selected');
+    const selectedNewButton = document.querySelector('.new-date-select-button.selected');
+    const oldHour = selectedOldButton ? selectedOldButton.dataset.value : "00";
+    const newHour = selectedNewButton ? selectedNewButton.dataset.value : "00";
+    let url = '';
     // Send API request
-    const url = `/api/${encodeURIComponent(endpoint)}?old_date=${encodeURIComponent(old_date)}&new_date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
-    console.log(url);
+    if (oldHour != 'last' && newHour != 'last'){
+        url = `/api/${encodeURIComponent(endpoint)}?old_date=${encodeURIComponent(old_date)}&new_date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}&old_hour=${encodeURIComponent(oldHour)}&new_hour=${encodeURIComponent(newHour)}`;
+    } else if (oldHour != 'last' && newHour == 'last'){
+        url = `/api/${encodeURIComponent(endpoint)}?old_date=${encodeURIComponent(old_date)}&new_date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}&old_hour=${encodeURIComponent(oldHour)}`;
+    } else if (oldHour == 'last' && newHour != 'last'){
+        url = `/api/${encodeURIComponent(endpoint)}?old_date=${encodeURIComponent(old_date)}&new_date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}&new_hour=${encodeURIComponent(newHour)}`;
+    } else {
+        url = `/api/${encodeURIComponent(endpoint)}?old_date=${encodeURIComponent(old_date)}&new_date=${encodeURIComponent(new_date)}&switch_name=${encodeURIComponent(switchName)}`;
+    }
     try {
         const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
         let outputArray = await response.json();

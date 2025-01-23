@@ -14,7 +14,7 @@ function formatDate(dateStr) {
 function track_ip() { 
     const ip_date = document.getElementById('ip_date').value;
     //format date input
-    ip_date = formateDate(ip_date)
+    ip_date = formatDate(ip_date)
     const ip = document.getElementById('ip_to_track').value;
     const url = `/api/track_ip?date=${encodeURIComponent(ip_date)}&ip=${encodeURIComponent(ip)}`;
     console.log(url)
@@ -42,28 +42,26 @@ function track_ip() {
     })
     .catch(error => console.error('Error fetching config:', error));
 }
-document.addEventListener('DOMContentLoaded', function() { 
-    const ip_date = document.getElementById('ip_date'); 
-    const ip = document.getElementById('ip_to_track');
-    const ip_track_button = document.getElementById('ip_track');
 
-    function validateDateFormat(date) {
-        const regex = /^(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])-\d{4}$/; return regex.test(date) || 
-        date.toLowerCase() == 'current';
-    }
-    function validateIpFormat(ip) {
-        const regex = /^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/;
-        return regex.test(ip);
-    }
-    function updateButtonState() { if (validateDateFormat(ip_date.value) && validateIpFormat(ip.value)) { 
-            ip_track_button.disabled = false; ip_track_button.disabled = false; 
-            ip_track_button.style.backgroundColor = '#4CAF50';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dateInput = document.getElementById('ip_date');
+    const ipInput = document.getElementById('ip_to_track');
+    const trackButton = document.getElementById('ip_track');
+
+    // Function to check if inputs are filled
+    function toggleButtonState() {
+        if (dateInput.value && ipInput.value) {
+            trackButton.disabled = false;
         } else {
-            ip_track_button.disabled = true; ip_track_button.disabled = true; 
-            ip_track_button.style.backgroundColor = 'grey';
+            trackButton.disabled = true;
         }
     }
-    ip_date.addEventListener('input', updateButtonState); ip_to_track.addEventListener('input', updateButtonState);
-    // Initialize button state
-    updateButtonState();
+
+    // Attach event listeners to the inputs
+    dateInput.addEventListener('input', toggleButtonState);
+    ipInput.addEventListener('input', toggleButtonState);
+
+    // Disable the button initially
+    trackButton.disabled = true;
 });

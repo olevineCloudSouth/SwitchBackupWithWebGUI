@@ -6,8 +6,8 @@ import ipaddress
 from .helpers.find_recent import find_recent
 
 def get_info():
-    #df = pd.read_csv("/opt/backup-script/switch_ips.csv") #prod server csv location
-    df = pd.read_csv(".\\switch_ips.csv") #for testing purposes
+    df = pd.read_csv("/opt/backup-script/switch_ips.csv") #prod server csv location
+    #df = pd.read_csv(".\\switch_ips.csv") #for testing purposes
     return df
 
 def subnet_str_to_array(subnet_str):
@@ -40,7 +40,7 @@ def check_ip(ip,date):
     for index, row in switch_info.iterrows():
         switch_name = row['name']
         #grab its config file
-        config_location = find_recent('/mnt/sda/switch-backups/', switch_name, 'config')
+        config_location = find_recent(f'/mnt/sda/switch-backups/{date}/', switch_name, 'config')
         try:
             with open(config_location, 'r') as config:
                 config_text = config.read()

@@ -1,3 +1,14 @@
 Added IP tracker page with navigation banner for going between the pages
 
 Deployable website intended for internal access to switch configs. Meant to run in tandem with switch backup script on a server so that you can quickly access and compare backup configs from a web gui and track IP routing
+
+Setup:
+
+This was setup with the intention of being deployed on a linux server.
+You will need to add the required crontab to a user with the correct permissions to run everything.
+You will need a program to host the static files in /gui/. I recommend nginx as the setup is fairly straight forward.
+Once those are hosted, you will need a  WSGI server to run the flask API. I recommend gunicorn for ease of setup but other options work as well.For the sake of safety and stability, I recommend creating a virtual enviornment that we can run our API/WSGI in.
+Once the WSGI server is online, you will need to setup an internal proxy to route the localhost port the WSGI server is hosted on to /api/ as that is where the js files are pointed. 
+    That step is slightly unnecessary, but skipping it would require changing all the JS to point to 127.0.0.1:xxxx
+
+Once all that is done. You should be good to go. Although, I recommend setting your WSGI/virtual enviornment startup and web hosting of the static files as services and enabling them so that things come back online automatically when the server gets rebooted.

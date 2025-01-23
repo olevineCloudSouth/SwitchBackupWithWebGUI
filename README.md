@@ -1,5 +1,3 @@
-Added IP tracker page with navigation banner for going between the pages
-
 Deployable website intended for internal access to switch configs so that you can quickly access and compare backup configs from a web gui and track IP routing
 
 More details on how to use the website can be found on the howto page.

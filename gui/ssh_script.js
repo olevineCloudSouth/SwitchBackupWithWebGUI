@@ -49,7 +49,7 @@ document.getElementById("sshButton").addEventListener("click", async function() 
         const switchIP = data.ip;
 
         if (switchIP) {
-            window.location.href = `ssh://${switchIP}`;
+            window.location.href = `ssh://netadmin@${switchIP}`;
         } else {
             alert("No IP found for the selected switch.");
         }

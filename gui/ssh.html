@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Switch Portal</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Add CSS file -->
+</head>
+<body>
+
+    <div class="banner">
+        <a href="index.html">Switch Backup/Data Viewer</a>
+        <a href="ip_trackdown.html">IP Tracker</a>
+        <a href="ssh.html" class="active">Open SSH Terminal</a>
+        <a href="howto.html" target="_blank">How To Use</a>
+    </div>
+
+    <div class="searchable-select">
+        <input type="text" id="searchInput" placeholder="Search for a switch...">
+        <select id="switch">
+            <!-- Options will be dynamically populated -->
+        </select>
+        <select id="dataTypeDropdown" class="data-type-dropdown">
+            <option value="configs">Configs</option>
+            <option value="mac-tables">Mac Address Tables</option>
+            <option value="interface-statuses">Interface Statuses</option>
+            <option value="arp-tables">Arp Tables</option>
+        </select>
+    </div>
+    <br>
+    <button id="sshButton">Open SSH Terminal</button>
+    <br>
+    <script src="ssh_script.js"></script>
+</body>
+</html>

@@ -212,7 +212,7 @@ async function compareMain() {
     try {
         const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
         let outputArray = await response.json();
-        outputArray = outputArray[0]
+        outputArray = outputArray.flat();
         // Process and format the output
         const compareDisplay = document.getElementById('compareDisplay');
         compareDisplay.innerHTML = ""; // Clear previous content
